@@ -1,0 +1,20 @@
+# NekoQR frontend
+# Needs the shared network once per server:  docker network create nekoqr
+services:
+  frontend:
+    build:
+      context: .
+      args:
+        # container name of the backend on the "nekoqr" network
+        NEKOQR_API_URL: http://nekoqr-backend:8080
+    image: nekoqr-frontend
+    container_name: nekoqr-frontend
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:3000:3000" # only Nginx on the host can reach it
+    networks:
+      - nekoqr
+
+networks:
+  nekoqr:
+    external: true
